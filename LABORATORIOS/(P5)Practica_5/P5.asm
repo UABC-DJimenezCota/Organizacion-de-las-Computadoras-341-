@@ -33,6 +33,7 @@ _start:
 
     ; d) Incrementar en 1el valor guardado en N.
 
+    N
 
     ; e) Divida el valor almacenado en BX entre 0xFF.
     ; f) Realice la suma entre el valor almacenado en N y el residuo de la división anterior.
