@@ -27,13 +27,20 @@ _start:
     mov al,10	; cambio de linea
 	call putchar
 
-    ; c) Defina una variable N de 2 bytes de longitud. 
+    ; c) Defina una variable N de 2 bytes de longitud...
 
-    N, HEX 
+
+    mov AL, 0
+    MUL BL
+    mov N, AX
+
+
 
     ; d) Incrementar en 1el valor guardado en N.
 
-    N
+    MOV AX, N
+    INC AX
+    MOV N, AX
 
     ; e) Divida el valor almacenado en BX entre 0xFF.
     ; f) Realice la suma entre el valor almacenado en N y el residuo de la división anterior.
@@ -44,4 +51,5 @@ _start:
     mov eax, 1
     int 0x80
 
-
+    section .data
+    N DW 8
