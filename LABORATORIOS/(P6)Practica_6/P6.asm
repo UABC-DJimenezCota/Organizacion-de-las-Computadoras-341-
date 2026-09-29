@@ -47,16 +47,18 @@ _start:
     ;remplazar en hex 40042021
     ;resultado 0110-0000-1101-0010-1010-0101-1101-0010
     mov EAX, 0x40042021
-    xor EAX, ESI
+    xor ESI, EAX
     call pBin_dw
 
     ; *********************************  inciso d
+    mov EAX,10	; cambio de linea
+	call putchar
 
-    
+    push CH , 0xA7
 
+    ; *********************************  inciso e
 
-
-
+    mov 
 
     mov eax, 1	;system call number (sys_exit) -- fin del programa
     int 0x80        ;call kernel
