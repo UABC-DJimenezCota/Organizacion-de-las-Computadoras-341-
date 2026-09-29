@@ -1,4 +1,4 @@
-%include "../../LIB/pc_iox.inc"  	; incluir declaraciones de procedimiento externos
+%include "../../LIB/pc_iox.inc"	; incluir declaraciones de procedimiento externos
 								; que se encuentran en la biblioteca libpc_io.a
 
 ;Ensamblar:	nasm -f elf32 P5.asm -o P5.o
@@ -17,15 +17,15 @@ _start:
     call pHex_dw
 
     mov al,10	; cambio de linea
-	call putchar
+    call putchar
 
     ; b) Coloque los 16bits menos significativos de EBX en la pila.
     push BX
-    mov EAX, ESP
+    movzx EAX, BX
     call pHex_w
 
     mov al,10	; cambio de linea
-	call putchar
+    call putchar
 
     ; c) Defina una variable N de 2 bytes de longitud...
 
@@ -39,9 +39,9 @@ _start:
     mov AL, 10
     call putchar
 
-
     ; d) Incrementar en 1el valor guardado en N.
 
+    inc word [N]
     movzx EAX, word [N]
     call pHex_w
 
