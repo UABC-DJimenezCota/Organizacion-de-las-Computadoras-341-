@@ -24,18 +24,39 @@ _start:
     call pBin_dw
 
     ; *********************************  inciso b
-    mov al,10	; cambio de linea
+    mov EAX,10	; cambio de linea
 	call putchar
 
     mov cx, 0x3F48
-    call pHex_dw
+    mov ax, cx
+    call pHex_w
+    call pBin_w
     shl cx, 3
-    call pHex_dw
-    call pBin_dw
+    mov ax, cx
+    call pHex_w
+    call pBin_w
 
     ; *********************************  inciso c
-    mov al,10	; cambio de linea
+    mov EAX,10	; cambio de linea
 	call putchar
+
+    mov ESI, 0x20D685F3
+    ;original  0010-0000-1101-0110-1000-0101-1111-0011
+    ;remplazar 0100-0000-0000-0100-0010-0000-0010-0001
+    ;           30             18    13        5     0
+    ;remplazar en hex 40042021
+    ;resultado 0110-0000-1101-0010-1010-0101-1101-0010
+    mov EAX, 0x40042021
+    xor EAX, ESI
+    call pBin_dw
+
+    ; *********************************  inciso d
+
+    
+
+
+
+
 
     mov eax, 1	;system call number (sys_exit) -- fin del programa
     int 0x80        ;call kernel
