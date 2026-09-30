@@ -21,7 +21,7 @@ _start:
 
     ; b) Coloque los 16bits menos significativos de EBX en la pila.
     push BX
-    movzx EAX, BX
+    movzx EAX, B
     call pHex_w
 
     mov al,10	; cambio de linea
