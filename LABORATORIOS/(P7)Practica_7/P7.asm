@@ -34,23 +34,20 @@ section .text
 _start:
 
 	; *********************************  inciso a
-	push msg_a_prompt
+	mov EDX, msg_a_prompt
 	call puts
-	add esp, 4
 
 	call getche		; Captura carácter en AL[cite: 1]
 	cmp AL, 'm'
 	jl .a_menor
 
-	push msg_a_mayor
+	mov EDX, msg_a_mayor
 	call puts
-	add esp, 4
 	jmp .fin_a
 
 .a_menor:
-	push msg_a_menor
+	mov EDX, msg_a_menor
 	call puts
-	add esp, 4
 
 .fin_a:
 
@@ -58,11 +55,10 @@ _start:
 	mov EAX, 10	; cambio de linea
 	call putchar
 
-	push msg_b_prompt
+	mov EDX, msg_b_prompt
 	call puts
-	add esp, 4
 
-	call getche		; Captura carácter[cite: 1]
+	call getche		; Captura carácter en AL[cite: 1]
 
 	; Evaluar rango '0'..'9'
 	cmp AL, '0'
@@ -78,21 +74,18 @@ _start:
 	jmp .b_invalido
 
 .b_numero:
-	push msg_b_num
+	mov EDX, msg_b_num
 	call puts
-	add esp, 4
 	jmp .fin_b
 
 .b_letra:
-	push msg_b_letra
+	mov EDX, msg_b_letra
 	call puts
-	add esp, 4
 	jmp .fin_b
 
 .b_invalido:
-	push msg_b_inv
+	mov EDX, msg_b_inv
 	call puts
-	add esp, 4
 
 .fin_b:
 
@@ -100,9 +93,8 @@ _start:
 	mov EAX, 10	; cambio de linea
 	call putchar
 
-	push msg_c_title
+	mov EDX, msg_c_title
 	call puts
-	add esp, 4
 
 	mov CX, 4		; CX define el tamano del triangulo (0 a 10)[cite: 1]
 
@@ -119,9 +111,8 @@ _start:
 
 	mov EDI, EBX
 .loop_ast1:
-	push dword '*'
+	mov EAX, '*'
 	call putchar
-	add esp, 4
 	dec EDI
 	jnz .loop_ast1
 
@@ -148,9 +139,8 @@ _start:
 
 	mov EDI, EBX
 .loop_ast2:
-	push dword '*'
+	mov EAX, '*'
 	call putchar
-	add esp, 4
 	dec EDI
 	jnz .loop_ast2
 
@@ -167,9 +157,8 @@ _start:
 	mov EAX, 10	; cambio de linea
 	call putchar
 
-	push msg_d_prompt
+	mov EDX, msg_d_prompt
 	call puts
-	add esp, 4
 
 	; Capturar 10 caracteres
 	mov ECX, 10
@@ -187,9 +176,8 @@ _start:
 	loop .loop_cap
 
 	; Imprimir mensaje
-	push msg_d_res
+	mov EDX, msg_d_res
 	call puts
-	add esp, 4
 
 	; Presentar en columna (uno por renglon)[cite: 1]
 	mov ECX, 10
@@ -200,9 +188,7 @@ _start:
 	push ESI
 
 	movzx EAX, byte [arreglo + ESI]
-	push EAX
 	call putchar
-	add esp, 4
 
 	mov EAX, 10	; cambio de linea
 	call putchar
