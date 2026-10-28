@@ -1,70 +1,138 @@
-%include "../../LIB/libpc_iox.inc"
 
-;Ensamblar:	nasm -f elf32 P8.asm -o P8.o
-;Enlazar: 	ld -m elf_i386 P8.o -L../../LIB/ -lpc_iox -o P8
-;Ejecutar:	./P8
+%include "../../LIB/pc_iox.inc"
 
+;Ensamblar: nasm -f elf32 P8.asm -o P8.o
+;Enlazar: ld -m elf_i386 P8.o -L../../LIB/ -lpc_iox -o P8
+;Ejecutar: ./P8
 
-section.data
-section.css
-vector1 resb 10
-vector2 resb 10
-section.text
+section .data
+    N db 5
 
-global capturar_n
-global desplegarHex_ebx
+section .bss
+    vector1 resb 10
+    vector2 resb 10
+    producto resd 1
+
+section .text
+global _start
 global capturar_vectores
+global desplegarHex_ebx
 global desplegarHex_vectores
+global suma_vectores
+global producto_vectores
 
-set_n : ;no mayor a 9
-    .loop_tryAgain
+capturar_vectores:
+    .repetir:
+        push ecx
         call getche
-        mov N, AL
-        cmp N, 9
-        jmp .loop_tryAgain
+        pop ecx
+        sub al, '0'
+        mov [ebx], al
+        inc ebx
+        loop .repetir
     ret
 
-capturar_vectores : ; ecx vees
-    mov ECX, 0
-    .loop_doItAgain:
-        call getch
-        push AL
-        add ECX, 1
-        cmp ECX, N
-        jmp .loop_doItAgain
-    ret
-
+desplegarHex_ebx:
+    jmp desplegarHex_vectores
 
 desplegarHex_vectores:
-    .loop
-    call pHex_b
+    .repetir:
+        mov al, [ebx]
+        push ebx
+        push ecx
+        call pHex_b
+        mov eax, ' '
+        call putchar
+        pop ecx
+        pop ebx
+        inc ebx
+        loop .repetir
     ret
 
 suma_vectores:
+    .repetir:
+        mov al, [ebx]
+        add al, [edx]
+        mov [ebx], al
+        inc ebx
+        inc edx
+        loop .repetir
     ret
+
 producto_vectores:
+    push esi
+    push edi
+    push ebp
+
+    mov esi, ebx
+    mov edi, edx
+    xor ebp, ebp
+
+    .repetir:
+        movzx eax, byte [esi]
+        movzx edx, byte [edi]
+        imul eax, edx
+        add ebp, eax
+        inc esi
+        inc edi
+        loop .repetir
+
+    mov [producto], ebp
+
+    pop ebp
+    pop edi
+    pop esi
     ret
 
 _start:
-;inciso a : CAPTURAR N EN ECX (10 DE VALOR MAXIMO)
-    call capturar_n
+    ;inciso a: capturar los vectores
+    mov ebx, vector1
+    movzx ecx, byte [N]
+    call capturar_vectores
 
-;inciso b : DESPLEGAR N BITES DE EBX EN FORMATO HEX 
-    
+    mov eax, 10
+    call putchar
 
-    call desplegarHex_ebx
+    mov ebx, vector2
+    movzx ecx, byte [N]
+    call capturar_vectores
 
-;inciso c : 	suma	de	dos	vectores
+    mov eax, 10
+    call putchar
 
+    ;inciso b: desplegar en hexadecimal
+    mov ebx, vector1
+    movzx ecx, byte [N]
+    call desplegarHex_vectores
+
+    mov eax, 10
+    call putchar
+
+    ;inciso c: sumar los vectores
+    mov ebx, vector1
+    mov edx, vector2
+    movzx ecx, byte [N]
     call suma_vectores
 
-;inciso d
+    mov ebx, vector1
+    movzx ecx, byte [N]
+    call desplegarHex_vectores
 
+    mov eax, 10
+    call putchar
+
+    ;inciso d: producto escalar
+    mov ebx, vector1
+    mov edx, vector2
+    movzx ecx, byte [N]
     call producto_vectores
 
-	; *********************************  fin  *********************************
-	mov EAX, 10	; cambio de linea
-	call putchar
+    mov eax, [producto]
+    call pHex_dw
 
-	mov eax, 1	; system call number (sys_exit) -- fin del programa
-	int 0x80	; call kernel
+    mov eax, 10
+    call putchar
+
+    mov eax, 1
+    xor ebx, ebx
+    int 0x80
