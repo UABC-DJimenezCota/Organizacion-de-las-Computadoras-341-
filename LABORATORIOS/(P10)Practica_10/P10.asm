@@ -20,6 +20,7 @@ pBin8b:
         call my_putchar
         pop EAX
         sub EAX, 1
+        push EAX
         cmp EAX, 1
         call loop8b
 
