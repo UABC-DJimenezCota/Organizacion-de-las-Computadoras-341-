@@ -32,29 +32,72 @@ pBin8b:
 
 pBin16b:
     push EBP             ;guarda EBP (el apuntador de la base de la pila) en la pila
-    mov EBP, ESP         ;copia ESP en EBP (ambos apuntan al tope de la pila)
+    mov EBP, ESP         ;copia ESP (el apuntador sobre la pila) en EBP (ambos apuntan al tope de la pila)
+    
+    mov EBX, [EBP+32]  
+    mov EAX, 8
+    push EAX
 
-    mov EBX , [EBP+32]  
-    and EBX, 128 
-    my_putchar
+    global loop8b:
+        mov EAX, EBX
+        and EAX, 128
+        call my_putchar
+        pop EAX
+        sub EAX, 1
+        push EAX
+        cmp EAX, 1
+        call loop8b
+
+        
+
 
     pop EBP              ;restaura EBP a la base
     RET                  ;regresa al programa
 
 pBin32b:
     push EBP             ;guarda EBP (el apuntador de la base de la pila) en la pila
-    mov EBP, ESP         ;copia ESP en EBP (ambos apuntan al tope de la pila)
-
+    mov EBP, ESP         ;copia ESP (el apuntador sobre la pila) en EBP (ambos apuntan al tope de la pila)
     
+    mov EBX, [EBP+32]  
+    mov EAX, 8
+    push EAX
+
+    global loop8b:
+        mov EAX, EBX
+        and EAX, 128
+        call my_putchar
+        pop EAX
+        sub EAX, 1
+        push EAX
+        cmp EAX, 1
+        call loop8b
+
+        
+
 
     pop EBP              ;restaura EBP a la base
     RET                  ;regresa al programa
 
 pBin64b:
     push EBP             ;guarda EBP (el apuntador de la base de la pila) en la pila
-    mov EBP, ESP         ;copia ESP en EBP (ambos apuntan al tope de la pila)
-
+    mov EBP, ESP         ;copia ESP (el apuntador sobre la pila) en EBP (ambos apuntan al tope de la pila)
     
+    mov EBX, [EBP+32]  
+    mov EAX, 8
+    push EAX
+
+    global loop8b:
+        mov EAX, EBX
+        and EAX, 128
+        call my_putchar
+        pop EAX
+        sub EAX, 1
+        push EAX
+        cmp EAX, 1
+        call loop8b
+
+        
+
 
     pop EBP              ;restaura EBP a la base
     RET                  ;regresa al programa
