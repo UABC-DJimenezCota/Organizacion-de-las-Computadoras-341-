@@ -1,9 +1,9 @@
 #include <stdio.h>
 
 void pBin8b (int);
-void pBin8b (int);
-void pBin8b (int);
-void pBin8b (int);
+void pBin16b (int);
+void pBin32b (int);
+void pBin64b (int);
 void my_putchar (char []);
 
 int main () {
