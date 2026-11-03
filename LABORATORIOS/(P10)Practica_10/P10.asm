@@ -5,6 +5,11 @@ global pBin8b
 global pBin16b
 global pBin32b
 global pBin64b
+global my_putchar
+global loop8b
+global loop16b
+global loop32b
+global loop64b
 
 pBin8b:
     push EBP             ;guarda EBP (el apuntador de la base de la pila) en la pila
@@ -14,7 +19,7 @@ pBin8b:
     mov EAX, 8
     push EAX
 
-    global loop8b:
+    loop8b:
         mov EAX, EBX
         and EAX, 128
         call my_putchar
@@ -38,7 +43,7 @@ pBin16b:
     mov EAX, 8
     push EAX
 
-    global loop8b:
+    loop16b:
         mov EAX, EBX
         and EAX, 128
         call my_putchar
@@ -62,7 +67,7 @@ pBin32b:
     mov EAX, 8
     push EAX
 
-    global loop8b:
+    loop32b:
         mov EAX, EBX
         and EAX, 128
         call my_putchar
@@ -86,7 +91,7 @@ pBin64b:
     mov EAX, 8
     push EAX
 
-    global loop8b:
+    loop64b:
         mov EAX, EBX
         and EAX, 128
         call my_putchar
