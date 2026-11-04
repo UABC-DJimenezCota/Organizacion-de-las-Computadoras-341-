@@ -1,120 +1,92 @@
 ;                       nasm -f elf32 P10.asm -o P10.o
+
 section .text
 
 global pBin8b
 global pBin16b
 global pBin32b
 global pBin64b
-global my_putchar
-global loop8b
-global loop16b
-global loop32b
-global loop64b
 
+; -------- 8 BITS --------
 pBin8b:
-    push EBP             ;guarda EBP (el apuntador de la base de la pila) en la pila
-    mov EBP, ESP         ;copia ESP (el apuntador sobre la pila) en EBP (ambos apuntan al tope de la pila)
-    
-    mov EBX, [EBP+32]  
-    mov EAX, 8
-    push EAX
+    push ebp ;protocolo de entrada, empuja ebp a la pila
+    mov ebp, esp ; ahora ebp apuntara a el tope de la pila
+    push ebx
 
-    loop8b:
-        mov EAX, EBX
-        and EAX, 128
-        call my_putchar
-        pop EAX
-        sub EAX, 1
-        push EAX
-        cmp EAX, 1
-        call loop8b
+    movzx ebx, byte [ebp+8]
+    shl ebx, 24
+    mov ecx, 8
+    call print_bits
 
-        
+    pop ebx
+    pop ebp
+    ret
 
-
-    pop EBP              ;restaura EBP a la base
-    RET                  ;regresa al programa
-
+; -------- 16 BITS --------
 pBin16b:
-    push EBP             ;guarda EBP (el apuntador de la base de la pila) en la pila
-    mov EBP, ESP         ;copia ESP (el apuntador sobre la pila) en EBP (ambos apuntan al tope de la pila)
-    
-    mov EBX, [EBP+32]  
-    mov EAX, 8
-    push EAX
+    push ebp ;protocolo de entrada, empuja ebp a la pila
+    mov ebp, esp ; ahora ebp apuntara a el tope de la pila
+    push ebx
 
-    loop16b:
-        mov EAX, EBX
-        and EAX, 128
-        call my_putchar
-        pop EAX
-        sub EAX, 1
-        push EAX
-        cmp EAX, 1
-        call loop8b
+    movzx ebx, word [ebp+8]
+    shl ebx, 16
+    mov ecx, 16
+    call print_bits 
 
-        
+    pop ebx
+    pop ebp
+    ret
 
-
-    pop EBP              ;restaura EBP a la base
-    RET                  ;regresa al programa
-
+; -------- 32 BITS --------
 pBin32b:
-    push EBP             ;guarda EBP (el apuntador de la base de la pila) en la pila
-    mov EBP, ESP         ;copia ESP (el apuntador sobre la pila) en EBP (ambos apuntan al tope de la pila)
-    
-    mov EBX, [EBP+32]  
-    mov EAX, 8
-    push EAX
+    push ebp ;protocolo de entrada, empuja ebp a la pila
+    mov ebp, esp ; ahora ebp apuntara a el tope de la pila
+    push ebx
 
-    loop32b:
-        mov EAX, EBX
-        and EAX, 128
-        call my_putchar
-        pop EAX
-        sub EAX, 1
-        push EAX
-        cmp EAX, 1
-        call loop8b
+    mov ebx, [ebp+8]
+    mov ecx, 32
+    call print_bits
 
-        
+    pop ebx
+    pop ebp
+    ret
 
-
-    pop EBP              ;restaura EBP a la base
-    RET                  ;regresa al programa
-
+; -------- 64 BITS --------
 pBin64b:
-    push EBP             ;guarda EBP (el apuntador de la base de la pila) en la pila
-    mov EBP, ESP         ;copia ESP (el apuntador sobre la pila) en EBP (ambos apuntan al tope de la pila)
-    
-    mov EBX, [EBP+32]  
-    mov EAX, 8
-    push EAX
+    push ebp ;protocolo de entrada, empuja ebp a la pila
+    mov ebp, esp ; ahora ebp apuntara a el tope de la pila
+    push ebx
 
-    loop64b:
-        mov EAX, EBX
-        and EAX, 128
-        call my_putchar
-        pop EAX
-        sub EAX, 1
-        push EAX
-        cmp EAX, 1
-        call loop8b
+    mov ebx, [ebp+12]
+    mov ecx, 32
+    call print_bits
 
-        
+    mov ebx, [ebp+8]
+    mov ecx, 32
+    call print_bits
+
+    pop ebx
+    pop ebp
+    ret
 
 
-    pop EBP              ;restaura EBP a la base
-    RET                  ;regresa al programa
+print_bits:
+    shl ebx, 1
+    setc al
+    add al, '0'
+    call my_putchar
+    loop print_bits
+    ret
 
-my_putchar: pushad                 ; salvar todos los registros
-    push eax              ; salvar EAX -- meter el caracter a la pila
-    mov eax,4            ; seleccionar el tipo llamada al sistema --> write (sys_write)
 
-    mov ebx,1            ;  seleccionar la salida a pantalla ---> File descriptor 1 - standard output
-    mov ecx,esp        ; ECX debe apuntar a la cadena, en este caso un caracter que está en la pila
-    mov edx,1            ; EDX debe tener la longitud de la cadena, en este caso uno solo caracter
-    int 80h                 ; llamar al sistema (escritura al standard output -- pantalla)
-
-    pop eax                ; recuperar EXA 
-    popad                  ; recuperar todos los registros
+my_putchar:
+    pushad
+    push eax
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, esp
+    mov edx, 1
+    int 80h
+    pop eax
+    popad
+    ret

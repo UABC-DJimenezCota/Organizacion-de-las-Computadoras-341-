@@ -1,56 +1,31 @@
+
 #include <stdio.h>
+#include <stdint.h>
 
-void pBin8b (int);
-void pBin16b (int);
-void pBin32b (int);
-void pBin64b (int);
-void my_putchar (char []);
+void pBin8b(uint8_t);
+void pBin16b(uint16_t);
+void pBin32b(uint32_t);
+void pBin64b(uint64_t);
 
-int main () {
-    int arg8b;
-    int arg16b;
-    int arg32b;
-    int arg64b;
-    int temp;
-    
-    do {
-        printf("Ingrese un numero menor a 256 ");
-        scanf("%d",arg8b);
-    }while (0<arg8b<256);
+int main() {
+    unsigned long long n;
 
-    temp=arg8b;
-    printf("El numero %d en binario es",temp);
-    pBin8b(arg8b);
-    
+    printf("Ingrese numero de 8 bits: ");
+    scanf("%llu", &n);
+    pBin8b(n);
 
-    do {
-        printf("Ingrese un numero menor a 65,535 ");
-        scanf("%d",arg16b);
-    }while (0<arg16b<65535); 
+    printf("\nIngrese numero de 16 bits: ");
+    scanf("%llu", &n);
+    pBin16b(n);
 
-    temp=arg16b;
-    printf("El numero %d en binario es",temp);
+    printf("\nIngrese numero de 32 bits: ");
+    scanf("%llu", &n);
+    pBin32b(n);
 
-    pBin16b(arg16b);
-    
-    do {
-        printf("Ingrese un numero menor a 4,294,967,295 ");
-        scanf("%d",arg32b);
-    }while (0<arg32b<4294967295); 
-    temp=arg32b;
-    printf("El numero %d en binario es",temp);
+    printf("\nIngrese numero de 64 bits: ");
+    scanf("%llu", &n);
+    pBin64b(n);
 
-    pBin32b(arg32b);
-
-    do {
-        printf("Ingrese un numero menor a  18,446,744,073,709,551,615 ");
-        scanf("%d",argarg64b);
-    }while (0<arg64b< 18446744073709551615);  
-    temp=arg64b;
-    printf("El numero %d en binario es",temp);
-
-    pBin64b(arg64b);
-
+     printf("\n");
     return 0;
 }
-
